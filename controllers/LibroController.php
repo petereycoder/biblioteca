@@ -93,9 +93,7 @@ class LibroController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
+        $this->subirFoto($model);
 
         return $this->render('update', [
             'model' => $model,
@@ -143,6 +141,10 @@ class LibroController extends Controller
             
             if($model->validate()){
                 if($model->archivo){
+                    if(file_exists($model->imagen)){
+                        unlink($model->imagen);
+                    }
+
                     $rutaArchivo = 'uploads/'.time()."_".$model->archivo->baseName.".".$model->archivo->extension;
                     if($model->archivo->saveAs($rutaArchivo)){
                         $model->imagen = $rutaArchivo;
