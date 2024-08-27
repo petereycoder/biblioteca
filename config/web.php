@@ -51,6 +51,11 @@ $config = [
         ],
         */
     ],
+    'container' => [
+            'definitions' => [
+                    'yii\widgets\LinkPager' => 'yii\bootstrap5\LinkPager'
+            ]
+    ],
     'params' => $params,
 ];
 
