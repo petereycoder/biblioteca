@@ -8,6 +8,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
+use yii\web\UploadedFile;
+
 /**
  * LibroController implements the CRUD actions for Libro model.
  */
@@ -70,9 +72,7 @@ class LibroController extends Controller
         $model = new Libro();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
+            $this->subirFoto($model);
         } else {
             $model->loadDefaultValues();
         }
@@ -130,5 +130,15 @@ class LibroController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    protected function subirFoto(Libro $model){
+        if ($model->load($this->request->post())) {
+            $model->archivo = UploadedFile::getInstance($model,'archivo');
+            $rutaArchivo = 'uploads/'.time()."_".$model->archivo->baseName.".".$model->archivo->extension;
+            $model->archivo->saveAs($rutaArchivo);            
+            $model->save();
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
     }
 }
