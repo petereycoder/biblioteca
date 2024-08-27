@@ -28,9 +28,9 @@ class Libro extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['titulo', 'imagen'], 'required'],
+            [['titulo'], 'required'],
             [['titulo'], 'string', 'max' => 255],
-            [['aechivo'], 'file', 'extensions' => 'jpg,png'],
+            [['archivo'], 'file', 'extensions' => 'jpg,png'],
         ];
     }
 

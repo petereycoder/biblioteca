@@ -135,10 +135,21 @@ class LibroController extends Controller
     protected function subirFoto(Libro $model){
         if ($model->load($this->request->post())) {
             $model->archivo = UploadedFile::getInstance($model,'archivo');
-            $rutaArchivo = 'uploads/'.time()."_".$model->archivo->baseName.".".$model->archivo->extension;
-            $model->archivo->saveAs($rutaArchivo);            
-            $model->save();
-            return $this->redirect(['view', 'id' => $model->id]);
+            
+            if($model->validate()){
+                if($model->archivo){
+                    $rutaArchivo = 'uploads/'.time()."_".$model->archivo->baseName.".".$model->archivo->extension;
+                    if($model->archivo->saveAs($rutaArchivo)){
+                        $model->imagen = $rutaArchivo;
+
+                    }
+                }
+            }
+      
+            if($model->save(false)){
+                return $this->redirect(['index']);
+            }
+           
         }
     }
 }
