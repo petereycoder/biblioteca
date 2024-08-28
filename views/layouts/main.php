@@ -40,7 +40,10 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         'options' => ['class' => 'navbar-nav'],
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'Libro', 'url' => ['/libro/index']],
+            (!Yii::$app->user->isGuest) 
+                ? (['label' => 'Libro', 'url' => ['/libro/index']])
+                : ("")
+            ,
             ['label' => 'Aplication', 'url' => ['/sitio/inicio']],
             ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
